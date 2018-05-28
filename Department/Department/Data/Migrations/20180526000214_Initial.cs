@@ -10,10 +10,6 @@ namespace Department.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
                 name: "IX_AspNetUserRoles_UserId",
                 table: "AspNetUserRoles");
 
@@ -21,12 +17,31 @@ namespace Department.Data.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles");
 
+            migrationBuilder.AddColumn<string>(
+                name: "Kind",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "AspNetUserClaims",
+                nullable: false,
+                oldClrType: typeof(int))
+                .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "AspNetRoleClaims",
+                nullable: false,
+                oldClrType: typeof(int))
+                .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
             migrationBuilder.CreateTable(
                 name: "Activities",
                 columns: table => new
                 {
                     ID = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Actaddress = table.Column<string>(nullable: true),
                     Actintroduction = table.Column<string>(nullable: true),
                     Actpictures = table.Column<string>(nullable: true),
@@ -43,7 +58,7 @@ namespace Department.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Email = table.Column<string>(nullable: true),
                     Minster = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
@@ -61,7 +76,7 @@ namespace Department.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ApplicationID = table.Column<long>(nullable: false),
                     DepartID = table.Column<long>(nullable: false)
                 },
@@ -75,7 +90,7 @@ namespace Department.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     DepartID = table.Column<long>(nullable: false),
                     MemberID = table.Column<long>(nullable: false)
                 },
@@ -89,15 +104,14 @@ namespace Department.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Email = table.Column<string>(nullable: true),
                     Gender = table.Column<bool>(nullable: false),
                     Grade = table.Column<string>(nullable: true),
                     Institute = table.Column<string>(nullable: true),
                     Introduction = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    StudentID = table.Column<string>(nullable: true)
+                    Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,18 +119,10 @@ namespace Department.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activities_DepartID",
@@ -194,18 +200,26 @@ namespace Department.Data.Migrations
                 name: "Students");
 
             migrationBuilder.DropIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles");
 
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true);
+            migrationBuilder.DropColumn(
+                name: "Kind",
+                table: "AspNetUsers");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "AspNetUserClaims",
+                nullable: false,
+                oldClrType: typeof(int))
+                .OldAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "AspNetRoleClaims",
+                nullable: false,
+                oldClrType: typeof(int))
+                .OldAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_UserId",

@@ -18,6 +18,9 @@ namespace Department.Models.AccountViewModels
         [Display(Name = "密码")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "需要选择是社团还是学生")]
+        public string Kind { get; set; }
+
         [Display(Name = "记住我?")]
         public bool RememberMe { get; set; }
     }

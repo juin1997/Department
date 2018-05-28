@@ -11,15 +11,15 @@ using System;
 namespace Department.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180520104617_removeStudentID")]
-    partial class removeStudentID
+    [Migration("20180528023115_removePasswd")]
+    partial class removePasswd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026");
 
             modelBuilder.Entity("Department.Models.Activity", b =>
                 {
@@ -58,6 +58,8 @@ namespace Department.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("Kind");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -88,8 +90,7 @@ namespace Department.Data.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -101,11 +102,13 @@ namespace Department.Data.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<string>("Introduction");
+
                     b.Property<string>("Minster");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("QQ");
 
                     b.Property<string>("Symbol");
 
@@ -145,6 +148,8 @@ namespace Department.Data.Migrations
 
                     b.Property<long>("DepartID");
 
+                    b.Property<string>("Duty");
+
                     b.Property<long>("MemberID");
 
                     b.HasKey("ID");
@@ -163,7 +168,7 @@ namespace Department.Data.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<bool>("Gender");
+                    b.Property<string>("Gender");
 
                     b.Property<string>("Grade");
 
@@ -173,7 +178,7 @@ namespace Department.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("StudentID");
 
                     b.HasKey("ID");
 
@@ -202,8 +207,7 @@ namespace Department.Data.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });

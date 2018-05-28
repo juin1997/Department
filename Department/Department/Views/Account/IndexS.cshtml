@@ -1,18 +1,18 @@
-﻿
+﻿@model Student
 @{
-    ViewData["Title"] = "Index2";
+    ViewData["Title"] = "个人主页";
 }
 
 <div style="padding-bottom:10%" class="bg">
-    <br/>
+    <br />
     <div style="margin-top:5%;margin-bottom:5%" class="row">
         <div style="padding-left:10%" class="col-md-3">
-            <img style="margin-bottom:3%;margin-left:5%" src="~/images/picture.png" class="img-rounded">
-            <text style="margin-bottom:3%;width:80%" class="form-control">姓名：周元</text>
-            <text style="margin-bottom:3%;width:80%" class="form-control">性别：男</text>
-            <text style="margin-bottom:3%;width:80%" class="form-control">学号：051503223</text>
-            <text style="margin-bottom:3%;width:80%" class="form-control">年级：2015级</text>
-            <text style="margin-bottom:3%;width:80%" class="form-control">学院：数计学院</text>
+            <img style="margin-bottom:3%;margin-left:4%" src="~/images/picture.png" class="img-rounded"><p />
+            <text style="margin-bottom:3%;width:80%" class="form-control">姓名：@Model.Name</text>
+            <text style="margin-bottom:3%;width:80%" class="form-control">性别：@Model.Gender</text>
+            <text style="margin-bottom:3%;width:80%" class="form-control">学号：@Model.StudentID</text>
+            <text style="margin-bottom:3%;width:80%" class="form-control">年级：@Model.Grade</text>
+            <text style="margin-bottom:3%;width:80%" class="form-control">学院：@Model.Institute</text>
         </div>
         <div class="col-md-6">
             <table class="table table-bordered">
@@ -43,10 +43,11 @@
                 </tbody>
             </table>
         </div>
-        <div  class="col-md-3">
-            <textarea rows="15" style="width:60%" class="form-control">部门活动通知：</textarea>
+        <div class="col-md-3">
+            <label>部门活动通知</label>
+            <textarea rows="15" style="width:60%" class="form-control"></textarea>
         </div>
     </div>
-    <button style="margin-left:35%" class="btn btn-primary">完善个人信息</button>
+    <a asp-action="EditS" style="margin-left:35%" class="btn btn-primary" asp-route-id="@Model.ID">完善个人信息</a>
     <button style="margin-left:10%" class="btn btn-primary">部门纳新申请</button>
 </div>

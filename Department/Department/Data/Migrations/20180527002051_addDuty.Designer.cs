@@ -11,9 +11,10 @@ using System;
 namespace Department.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180527002051_addDuty")]
+    partial class addDuty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +168,7 @@ namespace Department.Data.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("Gender");
+                    b.Property<bool>("Gender");
 
                     b.Property<string>("Grade");
 
@@ -177,7 +178,7 @@ namespace Department.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("StudentID");
+                    b.Property<string>("Password");
 
                     b.HasKey("ID");
 

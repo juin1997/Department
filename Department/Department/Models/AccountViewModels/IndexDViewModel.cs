@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Department.Models
+namespace Department.Models.AccountViewModels
 {
-    public class Depart
+    public class IndexDViewModel
     {
         public string Email { get; set; }
         public long ID { get; set; }
@@ -15,7 +13,5 @@ namespace Department.Models
         public string Minster { get; set; }
         public string Vice { get; set; }
         public string Symbol { get; set; }
-        public string QQ { get; set; }
-        public string Introduction { get; set; }
     }
 }

@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Department.Models;
-using Department.Data;
 using Department.Models.AccountViewModels;
 using Department.Services;
+using Department.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Department.Controllers
 {
@@ -41,26 +42,124 @@ namespace Department.Controllers
             _logger = logger;
         }
 
+
         [TempData]
         public string ErrorMessage { get; set; }
 
+        public IActionResult IndexD(Depart depart)
+        {
+            return View(depart);
+        }
+
+        public IActionResult IndexS(Student stu)
+        {
+            return View(stu);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditD(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var depart = await _applicationDbContext.Departs.SingleOrDefaultAsync(m => m.ID == id);
+            if (depart == null)
+            {
+                return NotFound();
+            }
+            return View(depart);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditD(long id, [Bind("ID,Email,Name,Minster,Vice,QQ,Introduction")] Depart depart)
+        {
+            if(id != depart.ID )
+            {
+                return NotFound();
+            }
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    _applicationDbContext.Departs.Update(depart);
+                    await _applicationDbContext.SaveChangesAsync();
+                }
+                catch(DbUpdateConcurrencyException)
+                {
+                    if(!DepartmentExists(depart.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IndexD), depart);
+            }
+            return View("Home", "Error");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditS(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var stu = await _applicationDbContext.Students.SingleOrDefaultAsync(m => m.ID == id);
+            if (stu == null)
+            {
+                return NotFound();
+            }
+            return View(stu);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditS(long id,[Bind("Email,ID,Gender,Name,Introduction,StudentID,Grade,Institute")] Student stu)
+        {
+            if (id != stu.ID)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _applicationDbContext.Students.Update(stu);
+                    await _applicationDbContext.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StudentExists(stu.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IndexS),stu);
+            }
+            return View("Home","Error");
+        }
+
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login()
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -69,7 +168,24 @@ namespace Department.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    if(model.Kind == "Department")
+                    {
+                        Depart depart = _applicationDbContext.Departs.Where(d => d.Email == model.Email).FirstOrDefault();
+                        if(depart == null)
+                        {
+                            return NotFound();
+                        }
+                        return RedirectToAction("IndexD", depart);
+                    }
+                    else
+                    {
+                        Student stu = _applicationDbContext.Students.Where(s => s.Email == model.Email).FirstOrDefault();
+                        if(stu == null)
+                        {
+                            return NotFound();
+                        }
+                        return RedirectToAction("IndexS", stu);
+                    }
                 }
                 if (result.IsLockedOut)
                 {
@@ -87,6 +203,7 @@ namespace Department.Controllers
             return View(model);
         }
 
+       
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Lockout()
@@ -96,21 +213,19 @@ namespace Department.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register()
         {
-            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Kind = model.Kind };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -122,21 +237,20 @@ namespace Department.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    if(model.Kind == "Depart")
+                    if (model.Kind == "Depart")
                     {
-                        var depart = new Depart {  Email = model.Email };
-                        _applicationDbContext.Departs.Add(depart);
-                        _applicationDbContext.SaveChanges();
-
+                        var depart = new Depart { Email = model.Email };
+                        await _applicationDbContext.Departs.AddAsync(depart);
+                        await _applicationDbContext.SaveChangesAsync();
+                        return RedirectToAction( nameof(IndexD),_applicationDbContext.Departs.Where(d=>d.Email == model.Email).FirstOrDefault());
                     }
-                    else if (model.Kind == "Student")
+                    else
                     {
-                        var stu = new Student {  Email = model.Email };
-                        _applicationDbContext.Students.Add(stu);
-                        _applicationDbContext.SaveChanges();
-
+                        var stu = new Student { Email = model.Email };
+                        await _applicationDbContext.Students.AddAsync(stu);
+                        await _applicationDbContext.SaveChangesAsync();
+                        return RedirectToAction("IndexS",_applicationDbContext.Students.Where(s=>s.Email == model.Email).FirstOrDefault());
                     }
-                    return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
             }
@@ -340,6 +454,17 @@ namespace Department.Controllers
         {
             return View();
         }
+
+        private bool StudentExists(long id)
+        {
+            return _applicationDbContext.Students.Any(e => e.ID == id);
+        }
+
+        private bool DepartmentExists(long id)
+        {
+            return _applicationDbContext.Departs.Any(e => e.ID == id);
+        }
+
 
         #region Helpers
 
