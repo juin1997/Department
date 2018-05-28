@@ -146,6 +146,25 @@ namespace Department.Controllers
             return View("Home","Error");
         }
 
+        //还没实现的功能
+        public IActionResult Activities()
+        {
+            return View();
+        }
+        public IActionResult Apply()
+        {
+            return View();
+        }
+        public IActionResult Applications()
+        {
+            return View();
+        }
+        public IActionResult NewMember()
+        {
+            return View();
+        }
+        
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login()
