@@ -20,9 +20,14 @@ namespace Department.Controllers
         }
 
         // GET: Applications
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? id)
         {
-            return View(await _context.Applications.ToListAsync());
+            if(id == null)
+            {
+                return NotFound();
+            }
+            ViewBag.id = id;
+            return View(await _context.Applications.Where(a => a.DepartID == id).ToListAsync());
         }
 
         // GET: Applications/Details/5
@@ -44,8 +49,9 @@ namespace Department.Controllers
         }
 
         // GET: Applications/Create
-        public IActionResult Create()
+        public IActionResult Create(long id)
         {
+            ViewBag.id = id;
             return View();
         }
 
@@ -54,13 +60,14 @@ namespace Department.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DepartID,Count,Time,Grade,Institute,Address,Enabled")] Application application)
+        public async Task<IActionResult> Create(long id, [Bind("Count,Time,Grade,Institute,Address,Enabled")] Application application)
         {
             if (ModelState.IsValid)
             {
+                application.DepartID = id;
                 _context.Add(application);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id });
             }
             return View(application);
         }
@@ -111,7 +118,8 @@ namespace Department.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                id = application.DepartID;
+                return RedirectToAction("Index", new { id });
             }
             return View(application);
         }
@@ -142,7 +150,8 @@ namespace Department.Controllers
             var application = await _context.Applications.SingleOrDefaultAsync(m => m.ID == id);
             _context.Applications.Remove(application);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            id = application.DepartID;
+            return RedirectToAction("Index", new { id });
         }
 
         private bool ApplicationExists(long id)

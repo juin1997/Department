@@ -280,8 +280,7 @@ namespace Department.Controllers
                         await _applicationDbContext.Departs.AddAsync(depart);
                         await _applicationDbContext.SaveChangesAsync();
                         long id = depart.ID;
-                        TempData["id"] = id;
-                        return RedirectToAction( "IndexD");
+                        return RedirectToAction( "IndexD", new { id });
                     }
                     else
                     {
@@ -289,8 +288,7 @@ namespace Department.Controllers
                         await _applicationDbContext.Students.AddAsync(stu);
                         await _applicationDbContext.SaveChangesAsync();
                         long id = stu.ID;
-                        TempData["id"] = id;
-                        return RedirectToAction("IndexS");
+                        return RedirectToAction("IndexS", new { id });
                     }
                 }
                 AddErrors(result);
