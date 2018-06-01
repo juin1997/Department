@@ -1,60 +1,40 @@
 ﻿@model Department.Models.Application
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "纳新细节";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Application</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DepartID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DepartID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Count)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Count)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Grade)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Grade)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Institute)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Institute)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Enabled)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Enabled)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index" asp-route-id="@Model.DepartID">Back to List</a>
+<div class="bg">
+    <br />
+    <h1 style="text-align:center;margin-bottom:5%">纳新细节</h1>
+
+    <div style="padding-bottom:20%">
+        <div class="form-group">
+            <label class="control-label">纳新人数</label>
+            <text class="form-control" >@Model.Count</text>
+        </div>
+            <div class="form-group">
+                <label class="control-label">面试时间</label>
+                <text class="form-control">@Model.Time</text>
+            </div>
+            <div class="form-group">
+                <label class="control-label">面试地点</label>
+                <text class="form-control" >@Model.Address</text>
+            </div>
+            <text style="margin-bottom:3%;margin-left:40%">发布范围</text>
+            <text  style="margin-left:2%">@Model.Grade</text>
+            <text style="margin-left:2%">@Model.Institute</text>
+            <p />
+            <div class="form-group">
+                <div style="margin-left:11%" class="checkbox">
+                    <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
+                    <label style="margin-left:2%"></label>
+                </div>
+            </div>
+            <div style="margin-left:48%">
+                <a asp-action="Edit" asp-route-id="@Model.ID">编辑</a> |
+                <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
+            </div>
+    </div>
 </div>

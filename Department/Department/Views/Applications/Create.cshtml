@@ -1,16 +1,15 @@
 ﻿@model Department.Models.Application
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "发布纳新";
 }
 
-<h2>Create</h2>
+<div class="bg">
+    <br />
+    <h1 style="text-align:center;margin-bottom:5%">发布纳新</h1>
 
-<h4>Application</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div  >
+        <form style="padding-bottom:20%" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Count" class="control-label"></label>
@@ -19,39 +18,49 @@
             </div>
             <div class="form-group">
                 <label asp-for="Time" class="control-label"></label>
-                <input style="width:80%" asp-for="Time" class="form-control" />
+                <input asp-for="Time" class="form-control" />
                 <span asp-validation-for="Time" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Grade" class="control-label"></label>
-                <input asp-for="Grade" class="form-control" />
-                <span asp-validation-for="Grade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Institute" class="control-label"></label>
-                <input asp-for="Institute" class="form-control" />
-                <span asp-validation-for="Institute" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+            <text style="margin-bottom:3%;margin-left:38%">发布范围</text>
+            <select asp-for="Grade" style="margin-left:1%">
+                <option value="">选择年级</option>
+                <option value="大一">大一</option>
+                <option value="大二">大二</option>
+                <option value="大三">大三</option>
+                <option value="大四">大四</option>
+            </select>
+            <select asp-for="Institute" style="margin-left:2%">
+                <option value="">选择学院</option>
+                <option value="电气工程与自动化">电气工程与自动化</option>
+                <option value="机械工程及自动化">机械工程及自动化</option>
+                <option value="数学与计算机科学">数学与计算机科学</option>
+                <option value="土木工程">土木工程</option>
+                <option value="环境与资源">环境与资源</option>
+                <option value="生物科学与工程">生物科学与工程</option>
+                <option value="外国语">外国语</option>
+                <option value="物理与信息工程">物理与信息工程</option>
+                <option value="建筑学院">建筑学院</option>
+                <option value="紫金矿业">紫金矿业</option>
+                <option value="厦门艺术美术">厦门艺术美术</option>
+                <option value="材料科学与工程">材料科学与工程"</option>
+            </select>
+            <p />
+            <span asp-validation-for="Grade" class="text-danger"></span>
+            <span asp-validation-for="Institute" class="text-danger"></span>
             <div class="form-group">
-                <div class="checkbox">
+                <div style="margin-left:14%" class="checkbox">
                     <label>
                         <input asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
                     </label>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+            <button type="submit" style="margin-left:47%; margin-top:2%" class="btn btn-primary">确定发布</button>
+            <a style="margin-left:49%;" asp-action="Index" asp-route-id="@ViewBag.id">返回</a>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

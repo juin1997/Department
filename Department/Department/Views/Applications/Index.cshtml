@@ -5,11 +5,11 @@
 }
 
 <div class="bg">
-    <br/>
+    <br />
     <p>
         <a style="font-size:20px" asp-action="Create" asp-route-id="@ViewBag.id">新建纳新</a>
     </p>
-    <table style="padding-bottom:10%" class="table">
+    <table class="table">
         <thead>
             <tr>
                 <th>
@@ -64,4 +64,5 @@
             }
         </tbody>
     </table>
+    <a asp-controller="Account" asp-action="IndexD" asp-route-id="@ViewBag.id">返回</a>
 </div>

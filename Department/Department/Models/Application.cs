@@ -8,13 +8,13 @@ namespace Department.Models
         public long ID { get; set; }
         public long DepartID { get; set; }
 
-        [Required(ErrorMessage = "需要填写人数")]
-        [Display(Name = "人数")]
+        [Required(ErrorMessage = "需要填写纳新人数")]
+        [Display(Name = "纳新人数")]
         public int Count { get; set; }
 
-        [Required(ErrorMessage = "需要填写时间")]
+        [Required(ErrorMessage = "需要填写面试时间")]
         [DataType(DataType.DateTime)]
-        [Display(Name = "时间")]
+        [Display(Name = "面试时间")]
         public DateTime Time { get; set; }
 
         [Required(ErrorMessage = "需要选择年级")]
@@ -25,8 +25,8 @@ namespace Department.Models
         [Display(Name = "学院")]
         public string Institute { get; set; }
 
-        [Required(ErrorMessage = "需要填写地址")]
-        [Display(Name = "地址")]
+        [Required(ErrorMessage = "需要填写面试地点")]
+        [Display(Name = "面试地点")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "需要选择是否有效")]
