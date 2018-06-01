@@ -2,6 +2,9 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Development"
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:5000/",
       "sslPort": 0
@@ -15,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SportsStore": {
+    "Department": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

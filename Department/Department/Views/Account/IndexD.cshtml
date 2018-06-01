@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-6">
             <img src="~/images/picture.png" style="margin-left:30%;margin-bottom:5%" class="img-circle"><p />
-            <a asp-action="NewMember" style="margin-left:22%;" class="btn btn-primary">发布纳新</a>
+            <a asp-controller="Applications" asp-action="Index"  style="margin-left:22%;" class="btn btn-primary">发布纳新</a>
             <a asp-action="Activities" style="margin-left:10%;" class="btn btn-primary">发布活动</a><p />
             <a asp-action="EditD" style="margin-left:22%;margin-top:6%" class="btn btn-primary" asp-route-id="@Model.ID">编辑资料</a>
             <a asp-action="Applications" style="margin-left:10%;margin-top:6%" class="btn btn-primary">查看申请</a>

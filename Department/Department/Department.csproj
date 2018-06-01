@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-Department-3AB32EF3-A170-4B36-8AF3-AFF86CB29BAA</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180531132303_addsm.cs" />
+    <Compile Remove="Data\Migrations\20180531132303_addsm.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />

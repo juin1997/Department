@@ -22,11 +22,29 @@
                 <input style="margin-bottom:3%;width:60%" asp-for="StudentID" class="form-control" />
                 <span asp-validation-for="StudentID" class="text-danger"></span>
                 <label style="margin-left:1%">年级</label>
-                <input style="margin-bottom:3%;width:60%" asp-for="Grade" class="form-control" />
-                <span asp-validation-for="Grade" class="text-danger"></span>
+                <select style="margin-bottom:3%;width:60%" asp-for="Grade" class="form-control" >
+                    <option value="@Model.Grade">@Model.Grade</option>
+                    <option value="大一" >大一</option>
+                    <option value="大二" >大二</option>
+                    <option value="大三" >大三</option>
+                    <option value="大四" >大四</option>
+                </select>
                 <label style="margin-left:1%">学院</label>
-                <input style="margin-bottom:3%;width:60%" asp-for="Institute" class="form-control" />
-                <span asp-validation-for="Institute" class="text-danger"></span>
+                <select style="margin-bottom:3%;width:60%" asp-for="Institute" class="form-control" >
+                    <option value="@Model.Institute">@Model.Institute</option>
+                    <option value="电气工程与自动化">电气工程与自动化</option>
+                    <option value="机械工程及自动化">机械工程及自动化</option>
+                    <option value="数学与计算机科学">数学与计算机科学</option>
+                    <option value="土木工程">土木工程</option>
+                    <option value="环境与资源">环境与资源</option>
+                    <option value="生物科学与工程">生物科学与工程</option>
+                    <option value="外国语">外国语</option>
+                    <option value="物理与信息工程">物理与信息工程</option>
+                    <option value="建筑学院">建筑学院</option>
+                    <option value="紫金矿业">紫金矿业</option>
+                    <option value="厦门艺术美术">厦门艺术美术</option>
+                    <option value="材料科学与工程">材料科学与工程"</option>
+                </select>
             </div>
             <div style="padding-left:10%" class="col-md-6">
                 <img src="~/images/picture.png" style="margin-bottom:3%" class="img-rounded"><p />

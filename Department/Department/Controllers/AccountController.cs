@@ -46,13 +46,31 @@ namespace Department.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public IActionResult IndexD(Depart depart)
+        public async Task<IActionResult> IndexD(long? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var depart = await _applicationDbContext.Departs.SingleOrDefaultAsync(m => m.ID == id);
+            if (depart == null)
+            {
+                return NotFound();
+            }
             return View(depart);
         }
 
-        public IActionResult IndexS(Student stu)
+        public async Task<IActionResult> IndexS(long? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var stu = await _applicationDbContext.Students.SingleOrDefaultAsync(m => m.ID == id);
+            if (stu == null)
+            {
+                return NotFound();
+            }
             return View(stu);
         }
 
@@ -96,7 +114,7 @@ namespace Department.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(IndexD), depart);
+                return RedirectToAction("IndexD", new { id });
             }
             return View("Home", "Error");
         }
@@ -141,7 +159,7 @@ namespace Department.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(IndexS),stu);
+                return RedirectToAction("IndexS", new { id });
             }
             return View("Home","Error");
         }
@@ -189,21 +207,21 @@ namespace Department.Controllers
                     _logger.LogInformation("User logged in.");
                     if(model.Kind == "Department")
                     {
-                        Depart depart = _applicationDbContext.Departs.Where(d => d.Email == model.Email).FirstOrDefault();
-                        if(depart == null)
+                        long? id = _applicationDbContext.Departs.Where(s => s.Email == model.Email).FirstOrDefault().ID;
+                        if (id == null)
                         {
                             return NotFound();
                         }
-                        return RedirectToAction("IndexD", depart);
+                        return RedirectToAction("IndexD",new { id });
                     }
                     else
                     {
-                        Student stu = _applicationDbContext.Students.Where(s => s.Email == model.Email).FirstOrDefault();
-                        if(stu == null)
+                        long? id = _applicationDbContext.Students.Where(s => s.Email == model.Email).FirstOrDefault().ID;
+                        if(id == null)
                         {
                             return NotFound();
                         }
-                        return RedirectToAction("IndexS", stu);
+                        return RedirectToAction("IndexS",new { id });
                     }
                 }
                 if (result.IsLockedOut)
@@ -239,7 +257,7 @@ namespace Department.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -261,14 +279,18 @@ namespace Department.Controllers
                         var depart = new Depart { Email = model.Email };
                         await _applicationDbContext.Departs.AddAsync(depart);
                         await _applicationDbContext.SaveChangesAsync();
-                        return RedirectToAction( nameof(IndexD),_applicationDbContext.Departs.Where(d=>d.Email == model.Email).FirstOrDefault());
+                        long id = depart.ID;
+                        TempData["id"] = id;
+                        return RedirectToAction( "IndexD");
                     }
                     else
                     {
                         var stu = new Student { Email = model.Email };
                         await _applicationDbContext.Students.AddAsync(stu);
                         await _applicationDbContext.SaveChangesAsync();
-                        return RedirectToAction("IndexS",_applicationDbContext.Students.Where(s=>s.Email == model.Email).FirstOrDefault());
+                        long id = stu.ID;
+                        TempData["id"] = id;
+                        return RedirectToAction("IndexS");
                     }
                 }
                 AddErrors(result);

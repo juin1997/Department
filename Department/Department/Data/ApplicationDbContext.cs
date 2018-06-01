@@ -17,6 +17,7 @@ namespace Department.Data
         public DbSet<Depart> Departs { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Activity> Activities { get; set; }
+        public DbSet<Application> Applications { get; set; }
         public DbSet<DtoMMapping> DtoMMappings { get; set; }
         public DbSet<DtoAMapping> DtoAMappings { get; set; }
 
@@ -36,6 +37,11 @@ namespace Department.Data
 
             modelBuilder.Entity<Activity>().HasKey(a => a.ID);
             modelBuilder.Entity<Activity>().HasIndex(a => a.DepartID);
+
+            modelBuilder.Entity<Application>().HasKey(a => a.ID);
+            modelBuilder.Entity<Application>().HasIndex(a => a.DepartID);
+            modelBuilder.Entity<Application>().HasIndex(a => a.Grade);
+            modelBuilder.Entity<Application>().HasIndex(a => a.Institute);
 
             modelBuilder.Entity<DtoMMapping>().HasKey(m => m.ID);
             modelBuilder.Entity<DtoMMapping>().HasIndex(m => m.DepartID);
