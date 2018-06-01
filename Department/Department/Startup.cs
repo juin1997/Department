@@ -68,7 +68,13 @@ namespace Department
 
                 routes.MapRoute(
                     name: "Application",
-                    template: "{controller=Applications}/{action}/{id}");
+                    template: "{controller=Applications}/{action}/{id?}");
+                routes.MapRoute(
+                    name: "Activity",
+                    template: "{controller=Activities}/{action}/{id?}");
+                routes.MapRoute(
+                    name: "Account",
+                    template: "{controller=Account}/{action}/{id?}");
             });
         }
     }

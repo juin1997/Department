@@ -27,5 +27,9 @@ namespace Department.Models
         [Display(Name = "具体情况")]
         public string Actintroduction { get; set; }
         public string Actpictures { get; set; }
+
+        [Required(ErrorMessage = "需要选择是否有效")]
+        [Display(Name = "是否有效")]
+        public bool Enabled { get; set; }
     }
 }

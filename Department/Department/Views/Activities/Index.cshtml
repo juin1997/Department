@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Department.Models.Activity>
+
+@{
+    ViewData["Title"] = "发布活动";
+}
+
+<div class="bg">
+    <br />
+    <p>
+        <a asp-action="Create" asp-route-id="@ViewBag.id">新建活动</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Actaddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Acttime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Enabled)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Actaddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Acttime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Enabled)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">编辑</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">细节</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-controller="Account" asp-action="IndexD" asp-route-id="@ViewBag.id">返回</a>
+</div>
