@@ -16,7 +16,11 @@
                 <input style="margin-bottom:3%;width:60%" asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
                 <label style="margin-left:1%">性别</label>
-                <input style="margin-bottom:3%;width:60%" asp-for="Gender" class="form-control" />
+                <select style="margin-bottom:3%;width:60%" asp-for="Gender" class="form-control" >
+                    <option value="">@Model.Gender</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
                 <label style="margin-left:1%">学号</label>
                 <input style="margin-bottom:3%;width:60%" asp-for="StudentID" class="form-control" />

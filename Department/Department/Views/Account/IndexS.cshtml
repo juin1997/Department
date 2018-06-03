@@ -1,4 +1,4 @@
-﻿@model Student
+﻿@model IndexSViewModel
 @{
     ViewData["Title"] = "个人主页";
 }
@@ -8,11 +8,11 @@
     <div style="margin-top:5%;margin-bottom:5%" class="row">
         <div style="padding-left:8%" class="col-md-3">
             <img style="margin-bottom:3%;margin-left:8%" src="~/images/picture.png" class="img-rounded"><p />
-            <text style="margin-bottom:3%;width:90%" class="form-control">姓名：@Model.Name</text>
-            <text style="margin-bottom:3%;width:90%" class="form-control">性别：@Model.Gender</text>
-            <text style="margin-bottom:3%;width:90%" class="form-control">学号：@Model.StudentID</text>
-            <text style="margin-bottom:3%;width:90%" class="form-control">年级：@Model.Grade</text>
-            <text style="margin-bottom:3%;width:90%" class="form-control">学院：@Model.Institute</text>
+            <text style="margin-bottom:3%;width:90%" class="form-control">姓名：@Model.Stu.Name</text>
+            <text style="margin-bottom:3%;width:90%" class="form-control">性别：@Model.Stu.Gender</text>
+            <text style="margin-bottom:3%;width:90%" class="form-control">学号：@Model.Stu.StudentID</text>
+            <text style="margin-bottom:3%;width:90%" class="form-control">年级：@Model.Stu.Grade</text>
+            <text style="margin-bottom:3%;width:90%" class="form-control">学院：@Model.Stu.Institute</text>
         </div>
         <div class="col-md-6">
             <table class="table table-bordered">
@@ -21,33 +21,32 @@
                     <tr>
                         <th>部门名称</th>
                         <th>部门职责</th>
-                        <th>部门人数</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>部门A</td>
-                        <td>部员</td>
-                        <td>21</td>
-                    </tr>
-                    <tr>
-                        <td>部门B</td>
-                        <td>副部</td>
-                        <td>32</td>
-                    </tr>
-                    <tr>
-                        <td>部门C</td>
-                        <td>部员</td>
-                        <td>12</td>
-                    </tr>
+                    @foreach (DNameandDuty d in Model.DNameandDuties)
+                    {
+                        <tr>
+                            <td>@d.DName</td>
+                            <td>@d.Duty</td>
+                        </tr>
+
+                    }
                 </tbody>
             </table>
         </div>
         <div class="col-md-3">
             <label>部门活动通知</label>
-            <textarea rows="15" style="width:60%" class="form-control"></textarea>
+            @foreach (Activity a in Model.Activities)
+            {
+                <textarea rows="5" style="width:80%" class="form-control">
+活动名称： @a.Name
+活动时间： @a.Acttime
+活动地点： @a.Actaddress
+                    </textarea>
+            }
         </div>
     </div>
-    <a asp-action="EditS" style="margin-left:35%" class="btn btn-primary" asp-route-id="@Model.ID">完善个人信息</a>
+    <a asp-action="EditS" style="margin-left:35%" class="btn btn-primary" asp-route-id="@Model.Stu.ID">完善个人信息</a>
     <a asp-action="Apply" style="margin-left:10%" class="btn btn-primary">部门纳新申请</a>
 </div>

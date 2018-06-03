@@ -11,9 +11,10 @@ using System;
 namespace Department.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180602093143_DtoM_DepartName")]
+    partial class DtoM_DepartName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,8 +59,6 @@ namespace Department.Data.Migrations
                         .IsRequired();
 
                     b.Property<int>("Count");
-
-                    b.Property<string>("DName");
 
                     b.Property<long>("DepartID");
 
@@ -177,15 +176,11 @@ namespace Department.Data.Migrations
 
                     b.Property<bool>("Enabled");
 
-                    b.Property<long>("StudentID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("ApplicationID");
 
                     b.HasIndex("DepartID");
-
-                    b.HasIndex("StudentID");
 
                     b.ToTable("DtoAMappings");
                 });

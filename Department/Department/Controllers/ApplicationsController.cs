@@ -65,6 +65,7 @@ namespace Department.Controllers
             if (ModelState.IsValid)
             {
                 application.DepartID = id;
+                application.DName = _context.Departs.Where(d => d.ID == id).FirstOrDefault().Name;
                 _context.Add(application);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { id });
@@ -93,7 +94,7 @@ namespace Department.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ID,DepartID,Count,Time,Grade,Institute,Address,Enabled")] Application application)
+        public async Task<IActionResult> Edit(long id, [Bind("ID,DepartID,DName,Count,Time,Grade,Institute,Address,Enabled")] Application application)
         {
             if (id != application.ID)
             {

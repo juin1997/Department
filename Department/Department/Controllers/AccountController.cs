@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Department.Models;
 using Department.Models.AccountViewModels;
 using Department.Services;
@@ -71,7 +69,29 @@ namespace Department.Controllers
             {
                 return NotFound();
             }
-            return View(stu);
+            List<long> Dids = new List<long>();
+            List<Activity> activities = new List<Activity>();
+            List<DNameandDuty> dNameandDuties = new List<DNameandDuty>();
+            var dtoMMappings = await _applicationDbContext.DtoMMappings.Where(m => m.MemberID == id).ToListAsync(); 
+            foreach( DtoMMapping dtoMMaping in dtoMMappings)
+            {
+                Dids.Add(dtoMMaping.DepartID);
+                DNameandDuty d = new DNameandDuty { DName = dtoMMaping.DepartName, Duty = dtoMMaping.Duty };
+                dNameandDuties.Add(d);
+            }
+            foreach(long Did in Dids)
+            {
+                List<Activity> activity = await _applicationDbContext.Activities.Where(a => a.DepartID == Did).ToListAsync();
+                activities.AddRange(activity);
+            }
+
+            IndexSViewModel indexSViewModel = new IndexSViewModel
+            {
+                Stu = stu,
+                DNameandDuties = dNameandDuties,
+                Activities = activities
+            };
+            return View(indexSViewModel);
         }
 
         [HttpGet]
@@ -165,11 +185,84 @@ namespace Department.Controllers
         }
 
         //还没实现的功能
-        public IActionResult Apply()
+        public IActionResult ShowD(long Did,long Sid,long Aid)
         {
-            return View();
+            Depart depart = _applicationDbContext.Departs.Find(Did);
+            return View(depart);
         }
-        public IActionResult Applications()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ShowD(long Did,long Sid, long Aid, bool enabled)
+        {
+            DtoAMapping dtoAMapping = await _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == Aid || d.StudentID == Sid).FirstOrDefaultAsync();
+            dtoAMapping.Enabled = enabled;
+            _applicationDbContext.DtoAMappings.Update(dtoAMapping);
+            long id = Sid;
+            return RedirectToAction("Apply", new { id });
+        }
+
+        public IActionResult Apply(long id)
+        {
+            ViewBag.id = id;
+            Student stu = _applicationDbContext.Students.SingleOrDefault(s => s.ID == id);
+            List<DtoMMapping> departs = _applicationDbContext.DtoMMappings.Where(d => d.MemberID == id).ToList();
+            List<long> departids = new List<long>();
+            foreach(DtoMMapping depart in departs)
+            {
+                departids.Add(depart.ID);
+            }
+            List<Application> applications = _applicationDbContext.Applications.Where(a => (a.Grade == stu.Grade) || (a.Institute == stu.Institute) || 
+            (a.Enabled == true) || !(departids.Contains(a.DepartID))).Select(a => a).ToList();
+            DtoAMapping dtoAMapping = new DtoAMapping();
+            foreach(Application application in applications)
+            {
+                if(_applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == application.ID || d.StudentID == id) == null)
+                {
+                    dtoAMapping.ApplicationID = application.ID;
+                    dtoAMapping.DepartID = application.DepartID;
+                    dtoAMapping.StudentID = id;
+                    dtoAMapping.Duty = "";
+                    dtoAMapping.Enabled = false;
+                    _applicationDbContext.DtoAMappings.Add(dtoAMapping);
+                }
+            }
+            List<ApplyViewModel> applyViewModels = new List<ApplyViewModel>();
+            for(int i = 0; i< applications.Count(); i++)
+            {
+                foreach (ApplyViewModel applyviewmodel in applyViewModels)
+                {
+                    applyviewmodel.DepartName = applications[i].DName;
+                    applyviewmodel.ApplicationID = applications[i].ID;
+                    applyviewmodel.DepartID = applications[i].DepartID;
+                    applyviewmodel.Address = applications[i].Address;
+                    applyviewmodel.Time = applications[i].Time;
+                    DtoAMapping dtoa = _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == applications[i].ID || d.StudentID == id).FirstOrDefault();
+                    applyviewmodel.Enabled = dtoa.Enabled;
+                }
+            }
+            return View(applyViewModels);
+        }
+
+        public IActionResult Applications(long id)
+        {
+            ViewBag.id = id;
+            List<DtoAMapping> dtoAMappings = _applicationDbContext.DtoAMappings.Where(d => d.DepartID == id).ToList();
+            List<long> stuids = new List<long>();
+            List<Student> stus = new List<Student>();
+            foreach(DtoAMapping dtoAMapping in dtoAMappings)
+            {
+                stuids.Add(dtoAMapping.StudentID);
+            }
+            stuids = stuids.Distinct().ToList();
+            foreach(long stuid in stuids)
+            {
+                stus.Add(_applicationDbContext.Students.Where(s => s.ID == stuid).FirstOrDefault());
+            }
+            return View(stuids);
+        }
+
+        public IActionResult AppliyDetails(long id)
         {
             return View();
         }

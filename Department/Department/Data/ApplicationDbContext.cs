@@ -50,6 +50,7 @@ namespace Department.Data
             modelBuilder.Entity<DtoMMapping>().HasKey(m => m.ID);
             modelBuilder.Entity<DtoAMapping>().HasIndex(m => m.DepartID);
             modelBuilder.Entity<DtoAMapping>().HasIndex(m => m.ApplicationID);
+            modelBuilder.Entity<DtoAMapping>().HasIndex(m => m.StudentID);
         }
     }
 }
