@@ -185,64 +185,97 @@ namespace Department.Controllers
         }
 
         //还没实现的功能
-        public IActionResult ShowD(long Did,long Sid,long Aid)
+        public IActionResult ShowD(long did,long sid,long aid)
         {
-            Depart depart = _applicationDbContext.Departs.Find(Did);
-            return View(depart);
+            Depart depart = _applicationDbContext.Departs.Find(did);
+            DtoAMapping dtoAMapping =  _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == aid && d.StudentID == sid).FirstOrDefault();
+            ShowDViewModel showDViewModel = new ShowDViewModel
+            {
+                Sid = sid,
+                Aid = aid,
+                Did = did,
+                Department = depart,
+                Enabled = dtoAMapping.Enabled
+            };
+            return View(showDViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ShowD(long Did,long Sid, long Aid, bool enabled)
+        public async Task<IActionResult> ShowD([Bind("Did,Sid,Aid,Department,Enabled")]ShowDViewModel showDViewModel)
         {
-            DtoAMapping dtoAMapping = await _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == Aid || d.StudentID == Sid).FirstOrDefaultAsync();
-            dtoAMapping.Enabled = enabled;
+            DtoAMapping dtoAMapping = await _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == showDViewModel.Aid && d.StudentID == showDViewModel.Sid).FirstOrDefaultAsync();
+            if (dtoAMapping == null) return NotFound();
+            dtoAMapping.Enabled = showDViewModel.Enabled;
             _applicationDbContext.DtoAMappings.Update(dtoAMapping);
-            long id = Sid;
+            await _applicationDbContext.SaveChangesAsync();
+            long id = showDViewModel.Sid;
             return RedirectToAction("Apply", new { id });
         }
 
-        public IActionResult Apply(long id)
+        public async Task<IActionResult> Apply(long id)
         {
             ViewBag.id = id;
-            Student stu = _applicationDbContext.Students.SingleOrDefault(s => s.ID == id);
-            List<DtoMMapping> departs = _applicationDbContext.DtoMMappings.Where(d => d.MemberID == id).ToList();
-            List<long> departids = new List<long>();
-            foreach(DtoMMapping depart in departs)
+            Student stu = await _applicationDbContext.Students.SingleOrDefaultAsync(s => s.ID == id);
+            if(stu == null)
             {
-                departids.Add(depart.ID);
+                return NotFound();
             }
-            List<Application> applications = _applicationDbContext.Applications.Where(a => (a.Grade == stu.Grade) || (a.Institute == stu.Institute) || 
-            (a.Enabled == true) || !(departids.Contains(a.DepartID))).Select(a => a).ToList();
-            DtoAMapping dtoAMapping = new DtoAMapping();
+            List<DtoMMapping> departs = await _applicationDbContext.DtoMMappings.Where(d => d.MemberID == id).ToListAsync();
+            List<Application> applications = new List<Application>();
+            if (departs.Count() !=0)
+            {
+                List<long> departids = new List<long>();
+                foreach (DtoMMapping depart in departs)
+                {
+                    departids.Add(depart.ID);
+                }
+                applications = await _applicationDbContext.Applications.Where(a => a.Grade == stu.Grade && a.Institute == stu.Institute && a.Enabled == true && !(departids.Contains(a.DepartID))).ToListAsync();
+            }
+            else
+            {
+                 applications = await _applicationDbContext.Applications.Where(a => a.Grade == stu.Grade && a.Institute == stu.Institute && a.Enabled == true).ToListAsync();
+            }
+            if(applications == null)
+            {
+                return NotFound();
+            }
             foreach(Application application in applications)
             {
-                if(_applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == application.ID || d.StudentID == id) == null)
+                DtoAMapping dtoAMapping = await _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == application.ID && d.StudentID == id).FirstOrDefaultAsync();
+                if ( dtoAMapping == null)
                 {
-                    dtoAMapping.ApplicationID = application.ID;
-                    dtoAMapping.DepartID = application.DepartID;
-                    dtoAMapping.StudentID = id;
-                    dtoAMapping.Duty = "";
-                    dtoAMapping.Enabled = false;
-                    _applicationDbContext.DtoAMappings.Add(dtoAMapping);
+                    dtoAMapping = new DtoAMapping
+                    {
+                        ApplicationID = application.ID,
+                        DepartID = application.DepartID,
+                        StudentID = id,
+                        Duty = "",
+                        Enabled = false
+                    };    
+                    await  _applicationDbContext.DtoAMappings.AddAsync(dtoAMapping);
+                    await _applicationDbContext.SaveChangesAsync();
                 }
             }
             List<ApplyViewModel> applyViewModels = new List<ApplyViewModel>();
             for(int i = 0; i< applications.Count(); i++)
             {
-                foreach (ApplyViewModel applyviewmodel in applyViewModels)
+                DtoAMapping dtoa = await _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == applications[i].ID && d.StudentID == id).FirstOrDefaultAsync();
+                ApplyViewModel applyviewmodel = new ApplyViewModel
                 {
-                    applyviewmodel.DepartName = applications[i].DName;
-                    applyviewmodel.ApplicationID = applications[i].ID;
-                    applyviewmodel.DepartID = applications[i].DepartID;
-                    applyviewmodel.Address = applications[i].Address;
-                    applyviewmodel.Time = applications[i].Time;
-                    DtoAMapping dtoa = _applicationDbContext.DtoAMappings.Where(d => d.ApplicationID == applications[i].ID || d.StudentID == id).FirstOrDefault();
-                    applyviewmodel.Enabled = dtoa.Enabled;
-                }
+                    DepartName = applications[i].DName,
+                    ApplicationID = applications[i].ID,
+                    Count = applications[i].Count,
+                    DepartID = applications[i].DepartID,
+                    Address = applications[i].Address,
+                    Time = applications[i].Time,
+                    Enabled = dtoa.Enabled
+                };
+                applyViewModels.Add(applyviewmodel);
             }
             return View(applyViewModels);
         }
+
 
         public IActionResult Applications(long id)
         {
@@ -259,12 +292,46 @@ namespace Department.Controllers
             {
                 stus.Add(_applicationDbContext.Students.Where(s => s.ID == stuid).FirstOrDefault());
             }
-            return View(stuids);
+            return View(stus);
         }
 
-        public IActionResult AppliyDetails(long id)
+        public async Task<IActionResult> ApplicationDetails(long did, long sid)
         {
-            return View();
+            Student stu = await _applicationDbContext.Students.Where(s => s.ID == sid).FirstOrDefaultAsync();
+            ApplicationDetailsViewModel applicationDetailsViewModel = new ApplicationDetailsViewModel
+            {
+                Stu = stu,
+                Did = did,
+                Sid = sid
+            };
+            return View(applicationDetailsViewModel);
+        }
+
+        public async Task<IActionResult> Agree(long sid, long did)
+        {
+            DtoAMapping dtoAMapping = await _applicationDbContext.DtoAMappings.Where(d => d.StudentID == sid && d.DepartID == did).FirstOrDefaultAsync();
+            _applicationDbContext.DtoAMappings.Remove(dtoAMapping);
+            await _applicationDbContext.SaveChangesAsync();
+            Depart depart = await _applicationDbContext.Departs.Where(d => d.ID == did).FirstOrDefaultAsync();
+            DtoMMapping dtoMMapping = new DtoMMapping
+            {
+                DepartID = did,
+                MemberID = sid,
+                Duty = "部员",
+                DepartName = depart.Name
+            };
+            _applicationDbContext.DtoMMappings.Update(dtoMMapping);
+            await _applicationDbContext.SaveChangesAsync();
+            long id = did;
+            return RedirectToAction("Applications", new { id });
+        }
+        public async Task<IActionResult> Reject(long sid, long did)
+        {
+            DtoAMapping dtoAMapping = await _applicationDbContext.DtoAMappings.Where(d => d.StudentID == sid && d.DepartID == did).FirstOrDefaultAsync();
+            _applicationDbContext.DtoAMappings.Remove(dtoAMapping);
+            await _applicationDbContext.SaveChangesAsync();
+            long id = did;
+            return RedirectToAction("Applications", new { id });
         }
         
 
@@ -359,7 +426,7 @@ namespace Department.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    if (model.Kind == "Depart")
+                    if (model.Kind == "Department")
                     {
                         var depart = new Depart { Email = model.Email };
                         await _applicationDbContext.Departs.AddAsync(depart);

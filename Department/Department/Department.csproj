@@ -8,6 +8,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20180531132303_addsm.cs" />
     <Compile Remove="Data\Migrations\20180531132303_addsm.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180604025429_Index.cs" />
+    <Compile Remove="Data\Migrations\20180604025429_Index.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180604025530_FixDtoAKey.cs" />
+    <Compile Remove="Data\Migrations\20180604025530_FixDtoAKey.Designer.cs" />
   </ItemGroup>
 
 

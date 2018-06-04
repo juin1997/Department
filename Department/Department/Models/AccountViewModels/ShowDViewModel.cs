@@ -8,7 +8,10 @@ namespace Department.Models.AccountViewModels
 {
     public class ShowDViewModel
     {
-        public Depart Departs { get; set; }
+        public Depart Department { get; set; }
+        public long Sid { get; set; }
+        public long Did { get; set; }
+        public long Aid { get; set; }
         [Display(Name = "是否报名")]
         public bool Enabled { get; set; }
     }

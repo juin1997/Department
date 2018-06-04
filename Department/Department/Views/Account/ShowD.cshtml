@@ -3,7 +3,7 @@
     ViewData["Title"] = "部门详情";
 }
 
-    <h1 style="text-align:center;margin-bottom:3%">欢迎来到 @Model.Departs.Name</h1>
+    <h1 style="text-align:center;margin-bottom:3%">欢迎来到 @Model.Department.Name</h1>
     <div id="myCarousel" style="margin-bottom:3%" class="carousel slide" data-ride="carousel" data-interval="4000">
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -32,21 +32,25 @@
     </div>
 
     <div class="row">
-        <div style="padding-left:25%;margin-bottom:10%;" class="col-md-6">
-            <text style="margin-bottom:3%;width:70%;" class="form-control">部长：@Model.Departs.Minster</text>
-            <text style="margin-bottom:3%;width:70%" class="form-control">副部：@Model.Departs.Vice</text>
-            <text style="margin-bottom:3%;width:70%" class="form-control">社团交流QQ群：@Model.Departs.QQ</text>
+        <div style="padding-left:25%;margin-bottom:5%;" class="col-md-6">
+            <text style="margin-bottom:3%;width:70%;" class="form-control">部长：@Model.Department.Minster</text>
+            <text style="margin-bottom:3%;width:70%" class="form-control">副部：@Model.Department.Vice</text>
+            <text style="margin-bottom:3%;width:70%" class="form-control">社团交流QQ群：@Model.Department.QQ</text>
         </div>
         <div class="col-md-6">
-            <textarea rows="6" style="width:70%" class="form-control">简介：@Model.Departs.Introduction</textarea>
+            <textarea rows="6" style="width:70%" class="form-control">简介：@Model.Department.Introduction</textarea>
         </div>
     </div>
 
     <div>
-        <form>
+        <form asp-action="ShowD">
             <div class="form-group">
-                <div style="margin-left:45%" class="checkbox">
+                <div  style="margin-left:12%"  class="checkbox">
                     <label>
+                        <input type="hidden" asp-for="Department" />
+                        <input type="hidden" asp-for="Sid" />
+                        <input type="hidden" asp-for="Aid" />
+                        <input type="hidden" asp-for="Did" />
                         <input asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
                     </label>
                 </div>

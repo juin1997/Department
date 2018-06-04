@@ -6,10 +6,9 @@
 <div class="bg">
     <br />
     <h1 style="text-align:center">部门纳新申请</h1>
-    <h3 style="text-align:center;margin-bottom:3%">点击详情报名</h3>
-    <form>
+    <h3 style="text-align:center;margin-bottom:2%">点击详情报名</h3>
         <table style="width:70%;margin-left:15%;margin-bottom:5%" class="table table-bordered">
-            <caption>已加入的部门</caption>
+            <caption>可选择的部门</caption>
             <thead>
                 <tr>
                     <th>部门名称</th>
@@ -29,13 +28,12 @@
                         <td>@a.Count</td>
                         <td>@a.Address</td>
                         <td>@a.Time</td>
-                        <td><div class="checkbox"><input asp-for="@a.Enabled" /></div></td>
+                        <td>@Html.DisplayFor(modelItem => a.Enabled)</td>
                     </tr>
 
                 }
             </tbody>
         </table>
-    </form>
-    <button style="margin-left:47%;margin-bottom:20%" asp-action="IndexS" asp-route-id="@ViewBag.id" class="btn btn-primary">返回</button>
+        <a asp-action="IndexS" asp-route-id="@ViewBag.id"  style="margin-left:47%;margin-bottom:5%" class="btn btn-primary">返回</a>
 </div>
 
