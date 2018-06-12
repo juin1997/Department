@@ -1,0 +1,37 @@
+﻿@model JoinedDepartViewModel
+@{
+    ViewData["Title"] = "已加入的部门";
+    Layout = "_LayoutS";
+}
+
+<p>
+    <div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <center>
+            <header>
+                <h3>已加入的部门</h3>
+            </header>
+            <table class="hovertable" width="600">
+                <tr>
+                    <th>部门名称</th>
+                    <th>部门人数</th>
+                    <th>部门职位</th>
+                </tr>
+                @foreach(DNameCountDuty dnamecountduty in Model.DNameCountDuties)
+                {
+                <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+                    <td>@dnamecountduty.DName</td>
+                    <td>@dnamecountduty.Count</td>
+                    <td>@dnamecountduty.Duty</td>
+                </tr>
+
+                }
+            </table>
+        </center>
+    </div>
+</p>
+

@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="~/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/component.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/table.css" />
+    <script src="~/js/modernizr.custom.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <ul id="gn-menu" class="gn-menu-main">
+            <li class="gn-trigger">
+                <a class="gn-icon gn-icon-menu">
+                    <span>Menu</span>
+                </a>
+                <nav class="gn-menu-wrapper">
+                    <div class="gn-scroller">
+                        <ul class="gn-menu">
+                            <li>
+                                <a class="gn-icon gn-icon-article" asp-controller="Account" asp-action="InfoD" asp-route-id="@ViewBag.id">社团资料</a>
+                            </li>
+                            <li>
+                                <a class="gn-icon gn-icon-archive" asp-controller="Applications" asp-action="Index" asp-route-id="@ViewBag.id">发布纳新</a>
+                            </li>
+                            <li>
+                                <a class="gn-icon gn-icon-pictures" asp-controller="Activities" asp-action="Index" asp-route-id="@ViewBag.id">发布活动</a>
+                            </li>
+                            <li>
+                                <a class="gn-icon gn-icon-earth" asp-controller="Account" asp-action="Applications" asp-route-id="@ViewBag.id">查看申请</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /gn-scroller -->
+                </nav>
+            </li>
+            <li>
+                <a class="codrops-icon codrops-icon-drop" asp-controller="Account" asp-action="IndexD" asp-route-id="@ViewBag.id">社团主页</a>
+            </li>
+            <li>
+                <a class="codrops-icon codrops-icon-prev" asp-controller="Home" asp-action="Index">
+                    <span>返回网站主页</span>
+                </a>
+            </li>
+            <li>
+                <a class="codrops-icon codrops-icon-test" asp-controller="Home" asp-action="About">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+        <h3>@ViewBag.Title</h3>
+        @RenderBody()
+    </div>
+    <!-- /container -->
+    <script src="~/js/classie.js"></script>
+    <script src="~/js/gnmenu.js"></script>
+    <script>
+        new gnMenu(document.getElementById('gn-menu'));
+    </script>
+  
+</body>
+
+
+</html>

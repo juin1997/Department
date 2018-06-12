@@ -1,0 +1,35 @@
+﻿@model List<Activity>
+@{
+    ViewBag.Title = "活动通知";
+    Layout = "_LayoutS";
+}
+
+
+<p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <center>
+        <div>
+            <h3>@ViewBag.TItle</h3>
+            <table class="hovertable" width="600">
+                <tr>
+                    <th>活动名称</th>
+                    <th>活动时间</th>
+                    <th>活动地点</th>
+                </tr>
+                @foreach (Activity activity in Model)
+                {
+                    <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+                        <td>@activity.Name</td>
+                        <td>@activity.Acttime</td>
+                        <td>@activity.Actaddress</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </center>
+</p>
+

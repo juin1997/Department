@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
 namespace Department.Data.Migrations
@@ -56,8 +58,6 @@ namespace Department.Data.Migrations
                         .IsRequired();
 
                     b.Property<int>("Count");
-
-                    b.Property<string>("DName");
 
                     b.Property<long>("DepartID");
 
@@ -194,8 +194,6 @@ namespace Department.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<long>("DepartID");
-
-                    b.Property<string>("DepartName");
 
                     b.Property<string>("Duty");
 

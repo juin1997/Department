@@ -22,6 +22,7 @@ namespace Department.Controllers
         // GET: Applications
         public async Task<IActionResult> Index(long? id)
         {
+            ViewBag.id = id;
             if(id == null)
             {
                 return NotFound();
@@ -33,6 +34,7 @@ namespace Department.Controllers
         // GET: Applications/Details/5
         public async Task<IActionResult> Details(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -62,10 +64,10 @@ namespace Department.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(long id, [Bind("Count,Time,Grade,Institute,Address,Enabled")] Application application)
         {
+            ViewBag.id = id;
             if (ModelState.IsValid)
             {
                 application.DepartID = id;
-                application.DName = _context.Departs.Where(d => d.ID == id).FirstOrDefault().Name;
                 _context.Add(application);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { id });
@@ -76,6 +78,7 @@ namespace Department.Controllers
         // GET: Applications/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -96,6 +99,7 @@ namespace Department.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("ID,DepartID,DName,Count,Time,Grade,Institute,Address,Enabled")] Application application)
         {
+            ViewBag.id = id;
             if (id != application.ID)
             {
                 return NotFound();
@@ -128,6 +132,7 @@ namespace Department.Controllers
         // GET: Applications/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -148,6 +153,7 @@ namespace Department.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            ViewBag.id = id;
             var application = await _context.Applications.SingleOrDefaultAsync(m => m.ID == id);
             _context.Applications.Remove(application);
             await _context.SaveChangesAsync();

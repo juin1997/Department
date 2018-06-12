@@ -1,47 +1,49 @@
 ﻿@model Department.Models.Activity
 
 @{
-    ViewData["Title"] = "新建活动";
+    ViewBag.Title = "新建活动";
+    Layout = "_LayoutD";
 }
 
-<div class="bg">
+
     <br />
     <h1 style="text-align:center;margin-bottom:5%">新建活动</h1>
-    <form style="padding-bottom:5%" asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Actaddress" class="control-label"></label>
-            <input asp-for="Actaddress" class="form-control" />
-            <span asp-validation-for="Actaddress" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Acttime" class="control-label"></label>
-            <input asp-for="Acttime" class="form-control" />
-            <span asp-validation-for="Acttime" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Actintroduction" class="control-label"></label>
-            <textarea rows="5" asp-for="Actintroduction" class="form-control" ></textarea>
-            <span asp-validation-for="Actintroduction" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <div style="margin-left:10%" class="checkbox">
-                <label>
-                    <input asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <input style="margin-left:10%" type="submit" value="确定发布" class="btn btn-default" /><p/>
-            <a style="margin-left:13%" asp-action="Index" asp-route-id="@ViewBag.id">返回</a>
-        </div>
-    </form>
-</div>
+    <div style="margin-left:43%">
+        <form style="padding-bottom:5%" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <p>
+                <label>活动名称：</label>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </p>
+            <p>
+                <label>活动地点：</label>
+                <input asp-for="Actaddress" />
+                <span asp-validation-for="Actaddress" class="text-danger"></span>
+            </p>
+            <p>
+                <label>活动时间：</label>
+                <input asp-for="Acttime" />
+                <span asp-validation-for="Acttime" class="text-danger"></span>
+            </p>
+            <p>
+                <label>具体情况：</label>
+                <textarea rows="8" asp-for="Actintroduction"></textarea>
+                <span asp-validation-for="Actintroduction" class="text-danger"></span>
+            </p>
+            <p>
+                <div style="margin-left:10%;margin-bottom:5%;margin-top:5%" class="checkbox">
+                    <label>
+                        <input asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
+                    </label>
+                </div>
+            </p>
+            <p>
+                <input style="margin-left:10%" type="submit" value="确定发布" class="btn btn-default" />|
+                <a asp-action="Index" asp-route-id="@ViewBag.id">返回</a>
+            </p>
+        </form>
+    </div>
 
 
 

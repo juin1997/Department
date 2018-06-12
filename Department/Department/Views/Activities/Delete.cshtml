@@ -1,39 +1,42 @@
 ﻿@model Department.Models.Activity
 
 @{
-    ViewData["Title"] = "删除活动";
+    ViewBag.Title = "删除活动";
+    Layout = "_LayoutD";
 }
 
-<div class="bg">
+
     <br />
     <h1 style="text-align:center;margin-bottom:2%">删除活动</h1>
     <h3 style="text-align:center;margin-bottom:2%">你确定要删除吗?</h3>
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <text class="form-control">@Model.Name</text>
+    <div style="margin-left:43%">
+        <p>
+            <label class="control-label">活动名称：</label>
+            <text class="form-control">@Model.Name</text>
+        </p>
+        <p>
+            <label class="control-label">活动地点：</label>
+            <text class="form-control">@Model.Actaddress</text>
+        </p>
+        <p>
+            <label class="control-label">活动时间：</label>
+            <text class="form-control">@Model.Acttime</text>
+        </p>
+        <p>
+            <label class="control-label">具体情况：</label>
+            <text class="form-control">@Model.Actintroduction</text>
+        </p>
+        <p>
+            <div style="margin-left:7%" class="checkbox">
+                <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
+                <label style="margin-left:2%"></label>
+            </div>
+        </p>
+        <form style="margin-left:8%;margin-top:5%" asp-action="Delete">
+            <input type="hidden" asp-for="ID" />
+            <input type="submit" value="删除" class="btn btn-default" /> |
+            <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="Actaddress" class="control-label"></label>
-        <text class="form-control">@Model.Actaddress</text>
-    </div>
-    <div class="form-group">
-        <label asp-for="Acttime" class="control-label"></label>
-        <text asp-for="Acttime" class="form-control">@Model.Acttime</text>
-    </div>
-    <div class="form-group">
-        <label asp-for="Actintroduction" class="control-label"></label>
-        <textarea rows="5" class="form-control">@Model.Actintroduction</textarea>
-    </div>
-    <div class="form-group">
-        <div style="margin-left:11%" class="checkbox">
-            <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
-        </div>
-    </div>
-    <form style="margin-left:48%;padding-bottom:5%" asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="删除" class="btn btn-default" /> |
-        <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
-    </form>
-</div>
 
 

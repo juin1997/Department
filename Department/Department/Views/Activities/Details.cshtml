@@ -1,37 +1,41 @@
 ﻿@model Department.Models.Activity
 
 @{
-    ViewData["Title"] = "活动细节";
+    ViewBag.Title = "活动细节";
+    Layout = "_LayoutD";
 }
 
-<div class="bg">
-    <br />
-    <h1 style="text-align:center;margin-bottom:5%">活动细节</h1>
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <text class="form-control" >@Model.Name</text>
+
+<br />
+<h1 style="text-align:center;margin-bottom:5%">活动细节</h1>
+<div style="margin-left:43%">
+    <p>
+        <label class="control-label">活动名称：</label>
+        <text class="form-control">@Model.Name</text>
+    </p>
+    <p>
+        <label class="control-label">活动地点：</label>
+        <text class="form-control">@Model.Actaddress</text>
+    </p>
+    <p>
+        <label class="control-label">活动时间：</label>
+        <text class="form-control">@Model.Acttime</text>
+    </p>
+    <p>
+        <label class="control-label">具体情况：</label>
+        <text class="form-control">@Model.Actintroduction</text>
+    </p>
+    <p>
+        <div style="margin-left:7%" class="checkbox">
+            <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
+            <label style="margin-left:2%"></label>
         </div>
-        <div class="form-group">
-            <label asp-for="Actaddress" class="control-label"></label>
-            <text class="form-control" >@Model.Actaddress</text>
-        </div>
-        <div class="form-group">
-            <label asp-for="Acttime" class="control-label"></label>
-            <text asp-for="Acttime" class="form-control" >@Model.Acttime</text>
-        </div>
-        <div class="form-group">
-            <label asp-for="Actintroduction" class="control-label"></label>
-            <textarea rows="5"  class="form-control">@Model.Actintroduction</textarea>
-        </div>
-        <div class="form-group">
-            <div style="margin-left:11%" class="checkbox">
-                <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
-            </div>
-        </div>
-        <div style="padding-bottom:5%" class="form-group">
-            <a style="margin-left:15%" asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-            <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
-        </div>
+    </p>
+   
+    <div style="margin-left:8%;margin-top:5%">
+        <a asp-action="Edit" asp-route-id="@Model.ID">编辑</a>  |
+        <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
+    </div>
 </div>
 
 

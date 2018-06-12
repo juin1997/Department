@@ -22,6 +22,7 @@ namespace Department.Controllers
         // GET: Activities
         public async Task<IActionResult> Index(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -33,6 +34,7 @@ namespace Department.Controllers
         // GET: Activities/Details/5
         public async Task<IActionResult> Details(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -62,6 +64,7 @@ namespace Department.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(long id, [Bind("Name,Actaddress,Acttime,Actintroduction,Actpictures,Enabled")] Activity activity)
         {
+            ViewBag.id = id;
             if (ModelState.IsValid)
             {
                 activity.DepartID = id;
@@ -75,6 +78,7 @@ namespace Department.Controllers
         // GET: Activities/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -95,6 +99,7 @@ namespace Department.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("ID,Name,DepartID,Actaddress,Acttime,Actintroduction,Actpictures,Enabled")] Activity activity)
         {
+            ViewBag.id = id;
             if (id != activity.ID)
             {
                 return NotFound();
@@ -127,6 +132,7 @@ namespace Department.Controllers
         // GET: Activities/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
+            ViewBag.id = id;
             if (id == null)
             {
                 return NotFound();
@@ -147,6 +153,7 @@ namespace Department.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            ViewBag.id = id;
             var activity = await _context.Activities.SingleOrDefaultAsync(m => m.ID == id);
             _context.Activities.Remove(activity);
             await _context.SaveChangesAsync();

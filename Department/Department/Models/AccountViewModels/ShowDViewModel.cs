@@ -12,6 +12,9 @@ namespace Department.Models.AccountViewModels
         public long Sid { get; set; }
         public long Did { get; set; }
         public long Aid { get; set; }
+        [Required(ErrorMessage = "需要选择职位")]
+        [Display(Name = "职位")]
+        public string Duty { get; set; }
         [Display(Name = "是否报名")]
         public bool Enabled { get; set; }
     }

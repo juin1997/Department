@@ -1,0 +1,46 @@
+﻿@model Depart
+@{
+    ViewBag.Title = "社团资料";
+    Layout = "_LayoutD";
+}
+
+<div style="margin-left: 40%; margin-top: 10%">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="Email" />
+        <img style="margin-left: 10%;" src="~/images/picture.png" class="img-rounded">
+        <p>
+            <lable> 名&emsp;&emsp;称：</lable>
+            <input asp-for="Name" type="text">
+        </p>
+        <p>
+            <lable> 部&emsp;&emsp;长：</lable>
+            <input asp-for="Minster" type="text">
+        </p>
+        <p>
+            <lable>副&emsp;&emsp;部：</lable>
+            <input asp-for="Vice" type="text">
+        </p>
+        <p>
+            <lable>交流Q群： </lable>
+            <input asp-for="QQ" type="text">
+        </p>
+        <p>
+            <lable>照&emsp;&emsp;片：</lable>
+            <input type="file" name="filename">
+        </p>
+        <p>
+            <lable for="introduce">社团简介：</lable>
+            <textarea asp-for="Introduction" rows=5 cols=60>  </textarea>
+            <span asp-validation-for="Introduction" class="text-danger"></span>
+        </p>
+        <p>
+            <input style="margin-left:20%" type="submit" value="提交">
+        </p>
+    </form>
+    <br>
+    <br>
+    <br>
+</div>
+

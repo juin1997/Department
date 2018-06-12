@@ -1,0 +1,74 @@
+﻿@model Student
+@{
+    ViewBag.Title = "个人信息";
+    Layout = "_LayoutS";
+}
+
+<div style="margin-left: 40%; margin-top: 10%">
+    <form asp-action="InfoS">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="Email" />
+        <img style="margin-left: 10%;" src="~/images/picture.png" class="img-rounded">
+        <p>
+            姓&emsp;&emsp;名：
+            <input type="text" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </p>
+        <p>
+            性&emsp;&emsp;别：
+            <select asp-for="Gender">
+                <option value="">@Model.Gender</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </p>
+        <p>
+            学&emsp;&emsp;号：
+            <input type="text" asp-for="StudentID">
+            <span asp-validation-for="StudentID" class="text-danger"></span>
+        </p>
+        <p>
+            年&emsp;&emsp;级：
+            <select asp-for="Grade">
+                <option value="@Model.Grade">@Model.Grade</option>
+                <option value="大一">大一</option>
+                <option value="大二">大二</option>
+                <option value="大三">大三</option>
+                <option value="大四">大四</option>
+            </select>
+            <span asp-validation-for="Grade" class="text-danger"></span>
+        </p>
+        <p>
+            学&emsp;&emsp;院：
+            <select asp-for="Institute">
+                <option value="@Model.Institute">@Model.Institute</option>
+                <option value="电气工程与自动化">电气工程与自动化</option>
+                <option value="机械工程及自动化">机械工程及自动化</option>
+                <option value="数学与计算机科学">数学与计算机科学</option>
+                <option value="土木工程">土木工程</option>
+                <option value="环境与资源">环境与资源</option>
+                <option value="生物科学与工程">生物科学与工程</option>
+                <option value="外国语">外国语</option>
+                <option value="物理与信息工程">物理与信息工程</option>
+                <option value="建筑学院">建筑学院</option>
+                <option value="紫金矿业">紫金矿业</option>
+                <option value="厦门艺术美术">厦门艺术美术</option>
+                <option value="材料科学与工程">材料科学与工程"</option>
+            </select>
+            <span asp-validation-for="Institute" class="text-danger"></span>
+        </p>
+
+        <p>
+            特长介绍：
+            <textarea rows="6" style="width:50%;margin-bottom:5%" asp-for="Introduction"></textarea>
+            <span asp-validation-for="Introduction" class="text-danger"></span>
+        </p>
+        <p>
+            <input style="margin-left:30%" type="submit" value="提交">
+        </p>
+    </form>
+</div>
+
+

@@ -1,62 +1,59 @@
 ﻿@model List<Student>
 @{
-    ViewData["Title"] = "Applications";
+    ViewBag.Title = "查看申请";
+    Layout = "_LayoutD";
 }
 
-<div class="bg">
+
     <br />
     <p>
         <h1 style="text-align:center;margin-bottom:5%">查看申请</h1>
     </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    姓名
-                </th>
-                <th>
-                    性别
-                </th>
-                <th>
-                    学号
-                </th>
-                <th>
-                    年级
-                </th>
-                <th>
-                    学院
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var stu in Model)
-            {
+    <center>
+        <table class="hovertable" width="600">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => stu.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => stu.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => stu.StudentID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => stu.Grade)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => stu.Institute)
-                    </td>
-                    <td>
-                        <a asp-action="ApplicationDetails" asp-route-did="@ViewBag.id" asp-route-sid="@stu.ID">详情</a>
-                    </td>
+                    <th>
+                        姓名
+                    </th>
+                    <th>
+                        性别
+                    </th>
+                    <th>
+                        学号
+                    </th>
+                    <th>
+                        年级
+                    </th>
+                    <th>
+                        学院
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <a asp-controller="Account" asp-action="IndexD" asp-route-id="@ViewBag.id">返回</a>
-</div>
+                @foreach (var stu in Model)
+                {
+                    <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+                        <td>
+                            @Html.DisplayFor(modelItem => stu.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => stu.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => stu.StudentID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => stu.Grade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => stu.Institute)
+                        </td>
+                        <td>
+                            <a asp-action="ApplicationDetails" asp-route-did="@ViewBag.id" asp-route-sid="@stu.ID">详情</a>
+                        </td>
+                    </tr>
+                    }
+        </table>
+    </center>
 
 
 

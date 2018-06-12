@@ -1,15 +1,16 @@
 ﻿@model IEnumerable<Department.Models.Activity>
 
 @{
-    ViewData["Title"] = "发布活动";
+    ViewBag.Title = "发布活动";
+    Layout = "_LayoutD";
 }
 
-<div class="bg">
+<center>
     <br />
-    <p>
-        <a asp-action="Create" asp-route-id="@ViewBag.id">新建活动</a>
+    <p style="margin-bottom:5%">
+        <a style="font-size:20px;text-align:center;" asp-action="Create" asp-route-id="@ViewBag.id">新建活动</a>
     </p>
-    <table class="table">
+    <table style="margin-bottom:5%" class="hovertable" width="600">
         <thead>
             <tr>
                 <th>
@@ -52,5 +53,4 @@
             }
         </tbody>
     </table>
-    <a asp-controller="Account" asp-action="IndexD" asp-route-id="@ViewBag.id">返回</a>
-</div>
+</center>

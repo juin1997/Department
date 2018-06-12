@@ -1,23 +1,13 @@
-﻿@model Depart
+﻿@model IndexDViewModel
 @{
-    ViewData["Title"] = "部门主页";
+    ViewBag.Title = "部门主页";
+    Layout = "_LayoutD";
 }
-<div class="bg">
-    <br />
-    <h1 style="text-align:center;margin-bottom:5%">欢迎来到 @Model.Name</h1>
-    <div class="row">
-        <div style="padding-left:25%;margin-bottom:20%;" class="col-md-6">
-            <text style="margin-bottom:3%;width:70%;" class="form-control">部长：@Model.Minster</text>
-            <text style="margin-bottom:3%;width:70%" class="form-control">副部：@Model.Vice</text>
-            <textarea rows="10" style="width:70%" class="form-control">简介：@Model.Introduction</textarea>
-        </div>
-        <div class="col-md-6">
-            <img src="~/images/picture.png" style="margin-left:30%;margin-bottom:5%" class="img-circle"><p />
-            <a asp-controller="Applications" asp-action="Index" asp-route-id="@Model.ID"  style="margin-left:22%;" class="btn btn-primary">发布纳新</a>
-            <a asp-controller="Activities" asp-action="Index"  asp-route-id="@Model.ID" style="margin-left:10%;" class="btn btn-primary">发布活动</a><p />
-            <a asp-action="EditD" asp-route-id="@Model.ID" style="margin-left:22%;margin-top:6%" class="btn btn-primary" >编辑资料</a>
-            <a asp-action="Applications" asp-route-id="@Model.ID" style="margin-left:10%;margin-top:6%" class="btn btn-primary">查看申请</a>
-        </div>
-    </div>
-</div>
+
+<header>
+    <h1>
+        欢迎回到 @Model.Dname 
+        <span>目前社团共有 @Model.Mnum 个人，有 @Model.Anum 个纳新申请</span>
+    </h1>
+</header>
 

@@ -12,6 +12,8 @@
     <Compile Remove="Data\Migrations\20180604025429_Index.Designer.cs" />
     <Compile Remove="Data\Migrations\20180604025530_FixDtoAKey.cs" />
     <Compile Remove="Data\Migrations\20180604025530_FixDtoAKey.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180612133331_removeDnames.cs" />
+    <Compile Remove="Data\Migrations\20180612133331_removeDnames.Designer.cs" />
   </ItemGroup>
 
 
@@ -27,6 +29,15 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\fonts\.DS_Store" />
+    <None Include="wwwroot\fonts\codropsicons\.DS_Store" />
+    <None Include="wwwroot\fonts\codropsicons\codropsicons.svg" />
+    <None Include="wwwroot\fonts\ecoicons\ecoicons.dev.svg" />
+    <None Include="wwwroot\fonts\ecoicons\ecoicons.svg" />
+    <None Include="wwwroot\fonts\部门通知.svg" />
   </ItemGroup>
 
 </Project>

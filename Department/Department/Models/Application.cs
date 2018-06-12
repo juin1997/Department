@@ -7,7 +7,6 @@ namespace Department.Models
     {
         public long ID { get; set; }
         public long DepartID { get; set; }
-        public string DName { get; set; }
 
         [Required(ErrorMessage = "需要填写纳新人数")]
         [Display(Name = "纳新人数")]
