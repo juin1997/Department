@@ -90,7 +90,7 @@ namespace Department.Controllers
                 {
                     Activity act = await _context.Activities.Where(a => a.Name == activity.Name && a.DepartID == activity.DepartID).FirstOrDefaultAsync();
                     long Aid = act.ID;
-                    TimeSpan t = activity.Noticetime - DateTime.Now;
+                    TimeSpan t = activity.Noticetime.AddHours(-12) - DateTime.Now;
                     BackgroundJob.Schedule(() => SendEmails(id, Aid), t);
                 }
                 return RedirectToAction("Index", new { id });
@@ -195,6 +195,7 @@ namespace Department.Controllers
             if(activity .Enabled == true)
             {
                 string name = activity.Name;
+                string time = activity.Acttime.ToString();
                 string address = activity.Actaddress;
                 string introduction = activity.Actintroduction;
                 string Dname = await _context.Departs.Where(d => d.ID == activity.DepartID).Select(d => d.Name).FirstOrDefaultAsync();
@@ -205,6 +206,7 @@ namespace Department.Controllers
                     Student student = await _context.Students.FindAsync(stuid);
                     string email = student.Email;
                     _EmailService.Send(email, $"{Dname}活动通知", $@"活动名称：{name}
+活动时间：{time}
 活动地点：{address}
 具体情况：{introduction}");
                 }
