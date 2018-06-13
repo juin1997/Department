@@ -5,11 +5,12 @@
 }
 
 <div style="margin-left: 40%; margin-top: 10%">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ID" />
         <input type="hidden" asp-for="Email" />
-        <img style="margin-left: 10%;" src="~/images/picture.png" class="img-rounded">
+        <input type="hidden" asp-for="PictureNum" />
+        <img style="margin-left: 10%;width:144px;height:144px" src="~/images/Departments/@Model.ID/picture.jpg" class="img-rounded">
         <p>
             <lable> 名&emsp;&emsp;称：</lable>
             <input asp-for="Name" type="text">
@@ -27,8 +28,12 @@
             <input asp-for="QQ" type="text">
         </p>
         <p>
-            <lable>照&emsp;&emsp;片：</lable>
-            <input type="file" name="filename">
+            <lable>部门标志：</lable>
+            <input type="file" name="file">
+        </p>
+        <p>
+            <lable>活动照片：</lable>
+            <input type="file" name="files" multiple>
         </p>
         <p>
             <lable for="introduce">社团简介：</lable>

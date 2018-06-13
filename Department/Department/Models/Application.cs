@@ -17,6 +17,11 @@ namespace Department.Models
         [Display(Name = "面试时间")]
         public DateTime Time { get; set; }
 
+        [Required(ErrorMessage = "需要填写截止时间")]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "截止时间")]
+        public DateTime Blocktime { get; set; }
+
         [Required(ErrorMessage = "需要选择年级")]
         [Display(Name = "年级")]
         public string Grade { get; set; }

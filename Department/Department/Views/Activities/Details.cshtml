@@ -22,6 +22,10 @@
         <text class="form-control">@Model.Acttime</text>
     </p>
     <p>
+        <label class="control-label">通知时间：</label>
+        <text class="form-control">@Model.Noticetime</text>
+    </p>
+    <p>
         <label class="control-label">具体情况：</label>
         <text class="form-control">@Model.Actintroduction</text>
     </p>
@@ -31,7 +35,7 @@
             <label style="margin-left:2%"></label>
         </div>
     </p>
-   
+
     <div style="margin-left:8%;margin-top:5%">
         <a asp-action="Edit" asp-route-id="@Model.ID">编辑</a>  |
         <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>

@@ -12,28 +12,32 @@
     <div style="margin-left:43%">
         <p>
             <label class="control-label">纳新人数：</label>
-            <text class="form-control" >@Model.Count</text>
+            <text class="form-control">@Model.Count</text>
         </p>
-            <p>
-                <label class="control-label">面试时间：</label>
-                <text class="form-control">@Model.Time</text>
-            </p>
-            <p>
-                <label class="control-label">面试地点：</label>
-                <text class="form-control" >@Model.Address</text>
-            </p>
-            <text>发布范围</text>
-            <text  style="margin-left:2%">@Model.Grade</text>
-            <text style="margin-left:2%">@Model.Institute</text>
-            <p />
-            <p>
-                <div style="margin-left:7%" class="checkbox">
-                    <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
-                    <label style="margin-left:2%"></label>
-                </div>
-            </p>
-            <div style="margin-left:8%;margin-top:5%">
-                <a asp-action="Edit" asp-route-id="@Model.ID">编辑</a>  |
-                <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
+        <p>
+            <label class="control-label">面试时间：</label>
+            <text class="form-control">@Model.Time</text>
+        </p>
+        <p>
+            <label class="control-label">截止时间：</label>
+            <text class="form-control">@Model.Blocktime</text>
+        </p>
+        <p>
+            <label class="control-label">面试地点：</label>
+            <text class="form-control">@Model.Address</text>
+        </p>
+        <text>发布范围</text>
+        <text style="margin-left:2%">@Model.Grade</text>
+        <text style="margin-left:2%">@Model.Institute</text>
+        <p />
+        <p>
+            <div style="margin-left:7%" class="checkbox">
+                <label>是否有效 :：@Html.DisplayFor(model => model.Enabled)</label>
+                <label style="margin-left:2%"></label>
             </div>
+        </p>
+        <div style="margin-left:8%;margin-top:5%">
+            <a asp-action="Edit" asp-route-id="@Model.ID">编辑</a>  |
+            <a asp-action="Index" asp-route-id="@Model.DepartID">返回</a>
+        </div>
     </div>

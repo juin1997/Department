@@ -14,7 +14,7 @@ namespace Department.Models
         public string Name { get; set; }
         public string Minster { get; set; }
         public string Vice { get; set; }
-        public string Symbol { get; set; }
+        public int PictureNum { get; set; }
         public string QQ { get; set; }
         public string Introduction { get; set; }
     }

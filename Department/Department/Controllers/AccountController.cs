@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -13,6 +14,8 @@ using Department.Models.AccountViewModels;
 using Department.Services;
 using Department.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace Department.Controllers
 {
@@ -20,18 +23,21 @@ namespace Department.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+       
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ApplicationDbContext applicationDbContext,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -76,12 +82,23 @@ namespace Department.Controllers
                 return NotFound();
             }
 
+            List<Activity> acts = await _applicationDbContext.Activities.ToListAsync();
+            foreach(Activity act in acts)
+            {
+                if(act.Acttime <= DateTime.Now)
+                {
+                    act.Enabled = false;
+                }
+            }
+            _applicationDbContext.Activities.UpdateRange(acts);
+            await _applicationDbContext.SaveChangesAsync();
+
             int jNum = await _applicationDbContext.DtoMMappings.Where(d => d.MemberID == id).CountAsync();
             List<Activity> activities = new List<Activity>();
             List<long> dids = await _applicationDbContext.DtoMMappings.Where(d => d.MemberID == id).Select(d => d.DepartID).ToListAsync();
             foreach (long did in dids)
             {
-                List<Activity> activity = await _applicationDbContext.Activities.Where(a => a.DepartID == did).ToListAsync();
+                List<Activity> activity = await _applicationDbContext.Activities.Where(a => a.DepartID == did && a.Enabled == true).ToListAsync();
                 activities.AddRange(activity);
             }
 
@@ -111,7 +128,7 @@ namespace Department.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> InfoD(long id, [Bind("ID,Email,Name,Minster,Vice,QQ,Introduction")] Depart depart)
+        public async Task<IActionResult> InfoD(long id, [Bind("ID,Email,PictureNum,Name,Minster,Vice,QQ,Introduction")] Depart depart, IFormFile file, IList<IFormFile> files)
         {
             ViewBag.id = id;
             if(id != depart.ID )
@@ -122,6 +139,36 @@ namespace Department.Controllers
             {
                 try
                 {
+                    if(file != null)
+                    {
+                        string filename = ContentDispositionHeaderValue
+                                            .Parse(file.ContentDisposition)
+                                            .FileName
+                                            .Trim('"');
+                        filename = Constants.FilePathD + id.ToString() + "/picture.jpg";
+                        using (FileStream fs = System.IO.File.Create(filename))
+                        {
+                            file.CopyTo(fs);
+                            fs.Flush();
+                        }
+                    }
+                    if(files != null)
+                    {
+                        foreach (IFormFile file2 in files)
+                        {
+                            string filename2 = ContentDispositionHeaderValue
+                                        .Parse(file2.ContentDisposition)
+                                        .FileName
+                                        .Trim('"');
+                            filename2 = Constants.FilePathD + id.ToString() + $"/{depart.PictureNum.ToString()}+.jpg";
+                            using (FileStream fs = System.IO.File.Create(filename2))
+                            {
+                                file2.CopyTo(fs);
+                                fs.Flush();
+                            }
+                            depart.PictureNum++;
+                        }
+                    }
                     _applicationDbContext.Departs.Update(depart);
                     await _applicationDbContext.SaveChangesAsync();
                 }
@@ -158,7 +205,7 @@ namespace Department.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> InfoS(long id,[Bind("Email,ID,Gender,Name,Introduction,StudentID,Grade,Institute")] Student stu)
+        public async Task<IActionResult> InfoS(long id,[Bind("Email,ID,Gender,Name,Introduction,StudentID,Grade,Institute")] Student stu, IList<IFormFile> files)
         {
             ViewBag.id = id;
             if (id != stu.ID)
@@ -169,6 +216,17 @@ namespace Department.Controllers
             {
                 try
                 {
+                    var file = files.First();
+                    var filename = ContentDispositionHeaderValue
+                                        .Parse(file.ContentDisposition)
+                                        .FileName
+                                        .Trim('"');
+                    filename = Constants.FilePathS + id.ToString() +  "/picture.jpg";
+                    using (FileStream fs = System.IO.File.Create(filename))
+                    {
+                        file.CopyTo(fs);
+                        fs.Flush();
+                    }
                     _applicationDbContext.Students.Update(stu);
                     await _applicationDbContext.SaveChangesAsync();
                 }
@@ -247,11 +305,22 @@ namespace Department.Controllers
         public async Task<IActionResult> Notice(long id)
         {
             ViewBag.id = id;
+            List<Activity> acts = await _applicationDbContext.Activities.ToListAsync();
+            foreach (Activity act in acts)
+            {
+                if (act.Acttime <= DateTime.Now)
+                {
+                    act.Enabled = false;
+                }
+            }
+            _applicationDbContext.Activities.UpdateRange(acts);
+            await _applicationDbContext.SaveChangesAsync();
+
             List<Activity> activities = new List<Activity>();
             List<long> dids = await _applicationDbContext.DtoMMappings.Where(d => d.MemberID == id).Select(d => d.DepartID).ToListAsync();
             foreach (long did in dids)
             {
-                List<Activity> activity = await _applicationDbContext.Activities.Where(a => a.DepartID == did).ToListAsync();
+                List<Activity> activity = await _applicationDbContext.Activities.Where(a => a.DepartID == did && a.Enabled == true).ToListAsync();
                 activities.AddRange(activity);
             }
             return View(activities);
@@ -259,6 +328,17 @@ namespace Department.Controllers
 
         public async Task<IActionResult> Apply(long id)
         {
+            List<Application> applys = await _applicationDbContext.Applications.ToListAsync();
+            foreach(Application apply in applys)
+            {
+                if(apply.Blocktime < DateTime.Now)
+                {
+                    apply.Enabled = false;
+                }
+            }
+            _applicationDbContext.Applications.UpdateRange(applys);
+            await _applicationDbContext.SaveChangesAsync();
+
             ViewBag.id = id;
             Student stu = await _applicationDbContext.Students.SingleOrDefaultAsync(s => s.ID == id);
             if(stu == null)
@@ -454,6 +534,7 @@ namespace Department.Controllers
         {
             if (ModelState.IsValid)
             {
+                 string SourceFile = "wwwroot/images/picture.png";
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Kind = model.Kind };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -466,12 +547,16 @@ namespace Department.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+                    bool isrewrite = true;
                     if (model.Kind == "Department")
                     {
-                        var depart = new Depart { Email = model.Email };
+                        var depart = new Depart { Email = model.Email, PictureNum = 0 };
                         await _applicationDbContext.Departs.AddAsync(depart);
                         await _applicationDbContext.SaveChangesAsync();
                         long id = depart.ID;
+                        Directory.CreateDirectory(Constants.FilePathD + id.ToString() + "/");
+                        string desFile = Constants.FilePathD + id.ToString() + "/picture.jpg";
+                        System.IO.File.Copy(SourceFile, desFile, isrewrite);
                         return RedirectToAction( "IndexD", new { id });
                     }
                     else
@@ -480,6 +565,9 @@ namespace Department.Controllers
                         await _applicationDbContext.Students.AddAsync(stu);
                         await _applicationDbContext.SaveChangesAsync();
                         long id = stu.ID;
+                        Directory.CreateDirectory(Constants.FilePathS + id.ToString() + "/");
+                        string desFile = Constants.FilePathS + id.ToString() + "/picture.jpg";
+                        System.IO.File.Copy(SourceFile, desFile, isrewrite);
                         return RedirectToAction("IndexS", new { id });
                     }
                 }

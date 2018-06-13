@@ -5,11 +5,11 @@
 }
 
 <div style="margin-left: 40%; margin-top: 10%">
-    <form asp-action="InfoS">
+    <form asp-action="InfoS"  enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ID" />
         <input type="hidden" asp-for="Email" />
-        <img style="margin-left: 10%;" src="~/images/picture.png" class="img-rounded">
+        <img style="margin-left: 10%;width:144px;height:144px" src="~/images/Students/@Model.ID/picture.jpg" class="img-rounded">
         <p>
             姓&emsp;&emsp;名：
             <input type="text" asp-for="Name">
@@ -23,6 +23,10 @@
                 <option value="女">女</option>
             </select>
             <span asp-validation-for="Gender" class="text-danger"></span>
+        </p>
+        <p>
+            <label>照&emsp;&emsp;片：</label>
+            <input type="file" name="files" />
         </p>
         <p>
             学&emsp;&emsp;号：

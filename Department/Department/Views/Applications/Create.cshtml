@@ -15,7 +15,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <input type="hidden" asp-for="DepartID" />
-            <input type="hidden" asp-for="DName" />
             <p>
                 <label>纳新人数：</label>
                 <input asp-for="Count" />
@@ -25,6 +24,11 @@
                 <label>面试时间：</label>
                 <input asp-for="Time" />
                 <span asp-validation-for="Time" class="text-danger"></span>
+            </p>
+            <p>
+                <label>截止时间：</label>
+                <input asp-for="Blocktime" />
+                <span asp-validation-for="Blocktime" class="text-danger"></span>
             </p>
             <p>
                 <label>面试地点：</label>

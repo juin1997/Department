@@ -11,9 +11,10 @@ using System;
 namespace Department.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180613050603_AddPictureNum")]
+    partial class AddPictureNum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,8 +57,6 @@ namespace Department.Data.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired();
-
-                    b.Property<DateTime>("Blocktime");
 
                     b.Property<int>("Count");
 

@@ -23,10 +23,13 @@ namespace Department.Models
         [Display(Name = "活动时间")]
         public DateTime Acttime { get; set; }
 
+        [Required(ErrorMessage = "需要填写通知时间")]
+        [Display(Name = "通知时间")]
+        public DateTime Noticetime { get; set; }
+
         [Required(ErrorMessage = "需要填写具体情况")]
         [Display(Name = "具体情况")]
         public string Actintroduction { get; set; }
-        public string Actpictures { get; set; }
 
         [Required(ErrorMessage = "需要选择是否有效")]
         [Display(Name = "是否有效")]

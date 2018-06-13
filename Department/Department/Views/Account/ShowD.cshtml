@@ -7,23 +7,21 @@
 <br/>
     <h1 style="text-align:center;margin-bottom:3%">欢迎来到 @Model.Department.Name</h1>
     
-    <div class="box" style="margin-top:50px;">
-        <div class="picbox">
-            <ul class="piclist mainlist">
-                <li><a href="#" target="_blank"><img src="~/images/4.jpg" width="220" height="105" /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/5.jpg"  /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/6.jpg" /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/7.jpg" /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/4.jpg" /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/5.jpg" /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/6.jpg" /></a></li>
-                <li><a href="#" target="_blank"><img src="~/images/7.jpg" /></a></li>
-            </ul>
-            <ul class="piclist swaplist"></ul>
+    <center>
+        <div class="box" style="margin-top:50px;">
+            <div class="picbox">
+                <ul class="piclist mainlist">
+                    @for (int i = 0; i < Model.Department.PictureNum; i++)
+                    {
+                        <li><a href="#" target="_blank"><img src="~/images/Departments/@Model.Department.ID/@i+.jpg" style="width:220px;height:105px" /></a></li>
+                    }
+                </ul>
+                <ul class="piclist swaplist"></ul>
+            </div>
+            <div class="og_prev"></div>
+            <div class="og_next"></div>
         </div>
-        <div class="og_prev"></div>
-        <div class="og_next"></div>
-    </div>
+    </center>
 
     <div style="margin-left:43%">
         <p><text style="margin-bottom:3%;width:70%;" class="form-control">部长：@Model.Department.Minster</text></p>

@@ -22,6 +22,17 @@ namespace Department.Controllers
         // GET: Applications
         public async Task<IActionResult> Index(long? id)
         {
+            List<Application> applys = await _context.Applications.ToListAsync();
+            foreach (Application apply in applys)
+            {
+                if (apply.Blocktime < DateTime.Now)
+                {
+                    apply.Enabled = false;
+                }
+            }
+            _context.Applications.UpdateRange(applys);
+            await _context.SaveChangesAsync();
+
             ViewBag.id = id;
             if(id == null)
             {
@@ -62,7 +73,7 @@ namespace Department.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(long id, [Bind("Count,Time,Grade,Institute,Address,Enabled")] Application application)
+        public async Task<IActionResult> Create(long id, [Bind("Count,Time,Blocktime,Grade,Institute,Address,Enabled")] Application application)
         {
             ViewBag.id = id;
             if (ModelState.IsValid)
@@ -97,7 +108,7 @@ namespace Department.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ID,DepartID,DName,Count,Time,Grade,Institute,Address,Enabled")] Application application)
+        public async Task<IActionResult> Edit(long id, [Bind("ID,DepartID,Count,Time,Blocktime,Grade,Institute,Address,Enabled")] Application application)
         {
             ViewBag.id = id;
             if (id != application.ID)

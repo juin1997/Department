@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\images\Departments\新文件夹\**" />
+    <Compile Remove="wwwroot\images\Students\新文件夹\**" />
+    <Content Remove="wwwroot\images\Departments\新文件夹\**" />
+    <Content Remove="wwwroot\images\Students\新文件夹\**" />
+    <EmbeddedResource Remove="wwwroot\images\Departments\新文件夹\**" />
+    <EmbeddedResource Remove="wwwroot\images\Students\新文件夹\**" />
+    <None Remove="wwwroot\images\Departments\新文件夹\**" />
+    <None Remove="wwwroot\images\Students\新文件夹\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Data\Migrations\20180531132303_addsm.cs" />
     <Compile Remove="Data\Migrations\20180531132303_addsm.Designer.cs" />
     <Compile Remove="Data\Migrations\20180604025429_Index.cs" />
@@ -18,9 +29,13 @@
 
 
   <ItemGroup>
+    <PackageReference Include="HangFire" Version="1.7.0-beta1" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0-beta1" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.4.8.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
   </ItemGroup>
@@ -39,5 +54,12 @@
     <None Include="wwwroot\fonts\ecoicons\ecoicons.svg" />
     <None Include="wwwroot\fonts\部门通知.svg" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Departments\" />
+    <Folder Include="wwwroot\images\Students\" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>
