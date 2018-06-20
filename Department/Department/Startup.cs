@@ -58,7 +58,7 @@ namespace Department
 
                     //账号密码
                     Account = "yujohn1997@outlook.com",
-                    Password = "YUjun4815162342"
+                    Password = "*********"
                 });
             });
 

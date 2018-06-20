@@ -139,6 +139,7 @@ namespace Department.Controllers
             {
                 try
                 {
+                    // 部门标志不为空，更新图片
                     if(file != null)
                     {
                         string filename = ContentDispositionHeaderValue
@@ -152,6 +153,7 @@ namespace Department.Controllers
                             fs.Flush();
                         }
                     }
+                    // 部门活动照片不为空，添加图片
                     if(files != null)
                     {
                         foreach (IFormFile file2 in files)
@@ -305,7 +307,7 @@ namespace Department.Controllers
         public async Task<IActionResult> Notice(long id)
         {
             ViewBag.id = id;
-            List<Activity> acts = await _applicationDbContext.Activities.ToListAsync();
+            List<Activity> acts = await _applicationDbContext.Activities.Where(a => a.Enabled == true).ToListAsync();
             foreach (Activity act in acts)
             {
                 if (act.Acttime <= DateTime.Now)
@@ -328,7 +330,7 @@ namespace Department.Controllers
 
         public async Task<IActionResult> Apply(long id)
         {
-            List<Application> applys = await _applicationDbContext.Applications.ToListAsync();
+            List<Application> applys = await _applicationDbContext.Applications.Where(a => a.Enabled == true).ToListAsync();
             foreach(Application apply in applys)
             {
                 if(apply.Blocktime < DateTime.Now)
@@ -349,7 +351,8 @@ namespace Department.Controllers
             List<Application> applications = new List<Application>();
             if (departids.Count() !=0)
             {
-                applications = await _applicationDbContext.Applications.Where(a => a.Grade == stu.Grade && a.Institute == stu.Institute && a.Enabled == true && (!(departids.Contains(a.DepartID)))).ToListAsync();
+                applications = await _applicationDbContext.Applications.Where(a => a.Grade == stu.Grade && a.Institute == stu.Institute && 
+                a.Enabled == true && (!(departids.Contains(a.DepartID)))).ToListAsync();
             }
             else
             {
